@@ -17,8 +17,6 @@ const app = express()
 
 let PORT = process.env.PORT || 4000
 
-let paramObject
-
 app.get("/", async (req, res) => {
     
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -33,9 +31,14 @@ app.get("/", async (req, res) => {
     }
     
     const data = await getData()
-    paramObject = data
-    console.log(paramObject)
-    res.send(paramObject)
+    let deserializeJson = `{\"LLD\":${data["LLD"]},
+                            \"window\":${data["window"]},
+                            \"time\":${data["time"]},
+                            \"id\":\"${data["id"]}\",
+                            \"status\":\"${data["status"]}\"
+                            }`
+    console.log(deserializeJson)
+    res.send(deserializeJson)
 });
 
 app.listen(PORT, () => {
