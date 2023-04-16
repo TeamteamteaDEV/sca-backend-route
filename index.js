@@ -1,11 +1,43 @@
-const express = require("express")
+import express from "express";
+import { initializeApp } from 'firebase/app';
+import { getFirestore, doc, getDoc, } from 'firebase/firestore/lite';
 
-let app = express()
+const firebaseConfig = {
+    apiKey: "AIzaSyBIfgnGlmxP3iI0IZwZAslZELo_uLQQLf0",
+    authDomain: "radiation-display-f5272.firebaseapp.com",
+    projectId: "radiation-display-f5272",
+    storageBucket: "radiation-display-f5272.appspot.com",
+    messagingSenderId: "46965304098",
+    appId: "1:46965304098:web:3b530ae87a325937f3937b"
+};
 
-app.get("/", (req, res) => {
-    res.send("Hello World")
-})
+const dbApp = initializeApp(firebaseConfig);
+const db = getFirestore(dbApp);
+const app = express()
 
-app.listen(8080, () => {
-    console.log("this server is running on port 8080")
+let PORT = process.env.PORT || 4000
+
+let paramObject
+
+app.get("/", async (req, res) => {
+    
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE'); 
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true); 
+    
+    const getData = async () => {
+        const docSnap = await getDoc(doc(db, "ScaParameter", "u11HXFCRjpZQ1STD75iy"));
+        const data = docSnap.data()
+        return data
+    }
+    
+    const data = await getData()
+    paramObject = data
+    console.log(paramObject)
+    res.send(paramObject)
+});
+
+app.listen(PORT, () => {
+    console.log(`Listen on the port ${PORT}`);
 })
