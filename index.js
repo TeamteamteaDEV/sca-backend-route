@@ -31,7 +31,7 @@ app.get("/", async (req, res) => {
     }
     
     const data = await getData()
-    let deserializeJson = `{\"LLD\":${data["LLD"]},\"window\":${data["window"]},\"time\":${data["time"]},\"id\":\"Project/${data["id"]}\",\"status\":${data["status"]},\"mode\":${data["mode"]}}`
+    let deserializeJson = `{\"LLD\":${data["LLD"]},\"window\":${data["window"]},\"time\":${data["time"]},\"id\":\"Project/${data["id"]}\",\"status\":${data["status"]},\"mode\":\"${data["mode"]}\"}`
     console.log(deserializeJson)
     res.send(deserializeJson)
 });
